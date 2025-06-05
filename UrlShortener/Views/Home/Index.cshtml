@@ -64,44 +64,55 @@
                                         <th>Kısa URL</th>
                                         <th>@Html.DisplayNameFor(m => m.First().ClickCount)</th>
                                         <th>@Html.DisplayNameFor(m => m.First().CreatedDate)</th>
+                                        <th>İşlemler</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var url in Model)
                                     {
-                                        <tr>
-                                            <td>
-                                                <a href="@url.OriginalUrl" 
-                                                   target="_blank" 
-                                                   class="text-truncate d-inline-block" 
-                                                   style="max-width: 300px;">
-                                                    @url.OriginalUrl
+                                    <tr>
+                                        <td>
+                                            <a href="@url.OriginalUrl" target="_blank"
+                                                class="text-truncate d-inline-block" style="max-width: 300px;">
+                                                @url.OriginalUrl
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Home" asp-action="RedirectToUrl"
+                                                asp-route-code="@url.ShortCode" target="_blank">
+                                                @Context.Request.Host/@url.ShortCode
+                                            </a>
+                                        </td>
+                                        <td>@url.ClickCount</td>
+                                        <td>@url.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a asp-controller="Home" asp-action="Redirect"
+                                                    asp-route-code="@url.ShortCode" class="btn btn-sm btn-primary"
+                                                    target="_blank" title="Git">
+                                                    <i class="fas fa-external-link-alt"></i>
                                                 </a>
-                                            </td>
-                                            <td>       
-                                                <a asp-controller="Home" 
-                                                   asp-action="RedirectToUrl" 
-                                                   asp-route-code="@url.ShortCode"
-                                                   target="_blank">
-                                                    @Context.Request.Host/@url.ShortCode
+                                                <a asp-controller="Home" asp-action="QrCode"
+                                                    asp-route-code="@url.ShortCode" class="btn btn-sm btn-success"
+                                                    target="_blank" title="QR Kod">
+                                                    <i class="fa-solid fa-qrcode"></i>
                                                 </a>
-                                            </td>
-                                            <td>@url.ClickCount</td>
-                                            <td>@url.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
-                                        </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            }
-            else
-            {
+                }
+                else
+                {
                 <div class="alert alert-info text-center">
                     Henüz kısaltılmış URL yok. İlk URL'nizi ekleyin!
                 </div>
-            }
+                }
+            </div>
         </div>
     </div>
-</div>

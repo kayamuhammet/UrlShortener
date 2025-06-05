@@ -12,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // URL Service
 builder.Services.AddScoped<IUrlService, UrlService>();
+builder.Services.AddScoped<IQrCodeService, QrCodeService>();
+
 
 var app = builder.Build();
 
