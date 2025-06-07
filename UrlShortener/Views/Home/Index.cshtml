@@ -43,6 +43,16 @@
                                    required>
                             <button class="btn btn-primary" type="submit">Kısalt</button>
                         </div>
+                        <div class="input-group">
+                            <span class="input-group-text">@Context.Request.Host</span>
+                            <input type="text"
+                                name="CustomSlug"
+                                class="form-control"
+                                placeholder="özel-link (isteğe bağlı)"
+                                pattern="[a-zA-Z0-9-]*"
+                                title="Sadece harf, rakam ve tire (-) kullanabilirsiniz">
+                            <button class="btn btn-group" type="submit">Kısalt</button>
+                        </div>
                         @Html.AntiForgeryToken()
                     </form>
                 </div>

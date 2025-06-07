@@ -34,7 +34,7 @@ public class HomeController : Controller
 
         try
         {
-            var shortCode = await _urlService.CreateShortUrlAsync(request.OriginalUrl);
+            var shortCode = await _urlService.CreateShortUrlAsync(request.OriginalUrl, request.CustomSlug);
             var shortUrl = Url.Action("Redirect", "Home", new { code = shortCode }, Request.Scheme);
 
             TempData["Success"] = $"Kısaltılmış URL: {shortUrl}";
