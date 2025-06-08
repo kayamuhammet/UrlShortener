@@ -20,3 +20,27 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.transition {
+    transition: all 0.3s ease;
+}
+
+.form-floating label {
+    padding-left: 1rem;
+}
+
+.input-group .form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+    z-index: 5;
+}
+

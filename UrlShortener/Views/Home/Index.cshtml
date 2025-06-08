@@ -4,71 +4,106 @@
     ViewData["Title"] = "URL Kısaltıcı";
 }
 
-<div class="container mt-4">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center mb-4">URL Kısaltıcı</h1>
+        <div class="col-md-10">
+            <!-- Ana Başlık -->
+            <div class="text-center mb-5">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="fas fa-link fa-2x text-primary"></i>
+                        </div>
+                <h1 class="display-4 fw-bold text-primary mb-2">URL Kısaltıcı</h1>
+                <p class="text-muted">Uzun URL'lerinizi anında kısaltın ve yönetin</p>
+            </div>
             
             <!-- Mesajlar -->
             @if (TempData["Success"] != null)
             {
-                <div class="alert alert-success">
-                    @TempData["Success"]
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             
             @if (TempData["Error"] != null)
             {
-                <div class="alert alert-danger">
-                    @TempData["Error"]
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             
             @if (ViewData["Errors"] != null)
             {
-                <div class="alert alert-danger">
-                    Lütfen geçerli bir URL giriniz.
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> Lütfen geçerli bir URL giriniz.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
-            
-            <!-- URL Kısaltma Formu -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <form asp-controller="Home" asp-action="ShortenUrl" method="post">
-                        <div class="input-group">
+              <!-- URL Kısaltma Formu -->
+            <div class="card shadow border-0 rounded-4 mb-5 hover-shadow transition">
+                <div class="card-body p-4">
+                    <form asp-controller="Home" asp-action="ShortenUrl" method="post" class="needs-validation" novalidate>
+                        <div class="form-floating mb-3">
                             <input type="url" 
+                                   id="originalUrl"
                                    name="OriginalUrl" 
-                                   class="form-control" 
+                                   class="form-control form-control-lg"
                                    placeholder="https://example.com"
-                                   required>
-                            <button class="btn btn-primary" type="submit">Kısalt</button>
+                                   required
+                                   autocomplete="off">
+                            <label for="originalUrl" class="text-muted">
+                                <i class="fas fa-globe me-2"></i>URL'nizi buraya yapıştırın
+                            </label>
+                            <div class="invalid-feedback">
+                                Lütfen geçerli bir URL giriniz
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <span class="input-group-text">@Context.Request.Host</span>
-                            <input type="text"
-                                name="CustomSlug"
-                                class="form-control"
-                                placeholder="özel-link (isteğe bağlı)"
-                                pattern="[a-zA-Z0-9-]*"
-                                title="Sadece harf, rakam ve tire (-) kullanabilirsiniz">
-                            <button class="btn btn-group" type="submit">Kısalt</button>
+                        
+                        <div class="form-floating mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    @Context.Request.Host/
+                                </span>
+                                <input type="text"
+                                    id="customSlug"
+                                    name="CustomSlug"
+                                    class="form-control border-start-0"
+                                    placeholder="özel-link"
+                                    pattern="[a-zA-Z0-9-]*"
+                                    autocomplete="off"
+                                    aria-label="Özel kısa link">
+                            </div>
+                            <small class="form-text text-muted mt-1">
+                                <i class="fas fa-info-circle me-1"></i>
+                                İsteğe bağlı: Kendi özel kısa linkinizi oluşturun (sadece harf, rakam ve tire kullanabilirsiniz)
+                            </small>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                <i class="fas fa-cut me-2"></i>URL'yi Kısalt
+                            </button>
                         </div>
                         @Html.AntiForgeryToken()
                     </form>
                 </div>
             </div>
-            
+
             <!-- URL Listesi -->
             @if (Model != null && Model.Any())
             {
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Kısaltılmış URL'ler (@Model.Count)</h5>
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-light py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Kısaltılmış URL'ler</h5>
+                            <span class="badge bg-primary rounded-pill">@Model.Count</span>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
                                     <tr>
                                         <th>@Html.DisplayNameFor(m => m.First().OriginalUrl)</th>
                                         <th>Kısa URL</th>
@@ -83,28 +118,53 @@
                                     <tr>
                                         <td>
                                             <a href="@url.OriginalUrl" target="_blank"
-                                                class="text-truncate d-inline-block" style="max-width: 300px;">
-                                                @url.OriginalUrl
+                                                class="text-truncate d-inline-block text-decoration-none" 
+                                                style="max-width: 300px;" 
+                                                title="@url.OriginalUrl">
+                                                <i class="fas fa-link me-2 text-muted"></i>@url.OriginalUrl
                                             </a>
                                         </td>
                                         <td>
-                                            <a asp-controller="Home" asp-action="RedirectToUrl"
-                                                asp-route-code="@url.ShortCode" target="_blank">
-                                                @Context.Request.Host/@url.ShortCode
-                                            </a>
+                                            <div class="input-group">
+                                                <input type="text" 
+                                                       value="@Context.Request.Scheme://@Context.Request.Host/Home/Redirect?code=@url.ShortCode" 
+                                                       class="form-control form-control-sm" 
+                                                       readonly>
+                                                <button class="btn btn-outline-secondary btn-sm copy-btn" 
+                                                        type="button" 
+                                                        data-clipboard-text="@Context.Request.Scheme://@Context.Request.Host/Home/Redirect?code=@url.ShortCode"
+                                                        title="Kopyala">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                            </div>
                                         </td>
-                                        <td>@url.ClickCount</td>
-                                        <td>@url.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td>
+                                            <span class="badge bg-info text-dark">
+                                                <i class="fas fa-mouse-pointer me-1"></i>@url.ClickCount
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                <i class="far fa-clock me-1"></i>
+                                                @url.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+                                            </small>
+                                        </td>
                                         <td>
                                             <div class="btn-group">
-                                                <a asp-controller="Home" asp-action="Redirect"
-                                                    asp-route-code="@url.ShortCode" class="btn btn-sm btn-primary"
-                                                    target="_blank" title="Git">
+                                                <a asp-controller="Home" 
+                                                   asp-action="Redirect"
+                                                   asp-route-code="@url.ShortCode" 
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   target="_blank" 
+                                                   title="URL'ye Git">
                                                     <i class="fas fa-external-link-alt"></i>
                                                 </a>
-                                                <a asp-controller="Home" asp-action="QrCode"
-                                                    asp-route-code="@url.ShortCode" class="btn btn-sm btn-success"
-                                                    target="_blank" title="QR Kod">
+                                                <a asp-controller="Home" 
+                                                   asp-action="QrCode"
+                                                   asp-route-code="@url.ShortCode" 
+                                                   class="btn btn-sm btn-outline-success"
+                                                   target="_blank" 
+                                                   title="QR Kod">
                                                     <i class="fa-solid fa-qrcode"></i>
                                                 </a>
                                             </div>
@@ -116,13 +176,15 @@
                         </div>
                     </div>
                 </div>
-                }
-                else
-                {
-                <div class="alert alert-info text-center">
-                    Henüz kısaltılmış URL yok. İlk URL'nizi ekleyin!
+            }
+            else
+            {
+                <div class="text-center p-5 bg-light rounded-3">
+                    <i class="fas fa-link fa-3x text-muted mb-3"></i>
+                    <h5>Henüz kısaltılmış URL yok</h5>
+                    <p class="text-muted">İlk URL'nizi ekleyerek başlayın!</p>
                 </div>
-                }
-            </div>
+            }
         </div>
     </div>
+</div>
