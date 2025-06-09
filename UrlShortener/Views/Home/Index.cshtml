@@ -125,14 +125,13 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <div class="input-group">
-                                                <input type="text" 
-                                                       value="@Context.Request.Scheme://@Context.Request.Host/Home/Redirect?code=@url.ShortCode" 
+                                            <div class="input-group">                                                <input type="text" 
+                                                       value="@Context.Request.Scheme://@Context.Request.Host/@url.ShortCode" 
                                                        class="form-control form-control-sm" 
                                                        readonly>
                                                 <button class="btn btn-outline-secondary btn-sm copy-btn" 
                                                         type="button" 
-                                                        data-clipboard-text="@Context.Request.Scheme://@Context.Request.Host/Home/Redirect?code=@url.ShortCode"
+                                                        data-clipboard-text="@Context.Request.Scheme://@Context.Request.Host/@url.ShortCode"
                                                         title="Kopyala">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
@@ -150,10 +149,7 @@
                                             </small>
                                         </td>
                                         <td>
-                                            <div class="btn-group">
-                                                <a asp-controller="Home" 
-                                                   asp-action="Redirect"
-                                                   asp-route-code="@url.ShortCode" 
+                                            <div class="btn-group">                                                <a href="/@url.ShortCode" 
                                                    class="btn btn-sm btn-outline-primary"
                                                    target="_blank" 
                                                    title="URL'ye Git">

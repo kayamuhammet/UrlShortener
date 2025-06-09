@@ -32,6 +32,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Add short URL route before default route
+app.MapControllerRoute(
+    name: "shortUrl",
+    pattern: "{code}",
+    defaults: new { controller = "Home", action = "RedirectToUrl" });
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

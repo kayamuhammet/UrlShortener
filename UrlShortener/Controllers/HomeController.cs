@@ -35,7 +35,7 @@ public class HomeController : Controller
         try
         {
             var shortCode = await _urlService.CreateShortUrlAsync(request.OriginalUrl, request.CustomSlug);
-            var shortUrl = Url.Action("Redirect", "Home", new { code = shortCode }, Request.Scheme);
+            var shortUrl = $"{Request.Scheme}://{Request.Host}/{shortCode}";
 
             TempData["Success"] = $"Kısaltılmış URL: {shortUrl}";
         }
@@ -48,7 +48,6 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    [Route("Home/Redirect")]
     public async Task<IActionResult> RedirectToUrl(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
@@ -81,7 +80,7 @@ public class HomeController : Controller
         if (url == null)
             return NotFound();
 
-        var shortUrl = Url.Action("RedirectToUrl", "Home", new { code }, Request.Scheme);
+        var shortUrl = $"{Request.Scheme}://{Request.Host}/{code}";
         var qrBytes = _qrCodeService.GenerateQrCodeBytes(shortUrl);
 
         return File(qrBytes, "image/png");
