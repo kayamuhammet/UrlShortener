@@ -1,0 +1,2 @@
+# .cshtml dosyalarını C# olarak algıla
+*.cshtml linguist-language=C#
