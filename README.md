@@ -4,7 +4,10 @@ Kullanıcı dostu bir URL kısaltma projesidir. Bu uygulama ile uzun URL’leri 
 
 ![.NET](https://img.shields.io/badge/.NET-7.0-512BD4)
 ![License](https://img.shields.io/badge/license-MIT-blue)
-
+![Screenshot](UrlShortener/wwwroot/flow-chart.png)
+# Sequence Diagram
+![Screenshot](UrlShortener/wwwroot/sequence-diagram.png)
+# Sayfalar
 ![Screenshot](UrlShortener/wwwroot/screenshot.png)
 
 ## Özellikler
